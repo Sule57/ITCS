@@ -1,7 +1,7 @@
 	CLO
 	JMP START
-	DB 0
-	DB 0
+	DB 0			; reserves register 03 for a variable
+	DB 0			; reserves register 04 for a variable
 START:
 	MOV AL, [03]		; withdraws the value of register 03 to AL
 	CMP AL, 3		; compares AL to number 3
