@@ -1,28 +1,27 @@
 	CLO			
 	JMP START
-	DB 0
-	DB 0
-	DB 0
-	DB 0
+	DB 0			; reserves register 03 for variable
+	DB 0			; reserves register 04 for variable
+	DB 0			; reserves register 05 for variable
 
 START:
-	MOV AL, 7A		; gives AL the value of A (10)
+	MOV AL, 7A		; gives AL the value of 7A (122)
 	MOV [03],AL		; saves the value of AL to register 03
-	MOV BL, 11		; gives BL the value of B
+	MOV BL, 11		; gives BL the value of 11 (17)
 	MOV [04],BL		; saves the value of BL to register 04
 
 BODY:
-	CMP BL, 0
-	JZ DISPLAY
+	CMP BL, 0		; compares variable BL to value 0 (stops bugs where BL is 0 at the start)
+	JZ DISPLAY		; if BL = 0, program jumps to block "DISPLAY"
 	CALL 60			; calls the function on register 60
-	MOV DL, [05]
-	MOV AL, [04]
-	MOV BL, [05]
-	CMP BL, 0
+	MOV DL, [05]		; withdraws the value of register 05 to variable DL
+	MOV AL, [04]		; withdraws the value of register 04 to variable AL
+	MOV BL, [05]		; withdraws the value of register 05 to variable BL
+	CMP BL, 0		; compares variable BL to value 0
 	JZ DISPLAY		; program jumps to block "DISPLAY"
-	MOV [03], AL
-	MOV [04], BL
-	JMP BODY
+	MOV [03], AL		; saves the value of AL to register 03
+	MOV [04], BL		; saves the value of BL to register 04
+	JMP BODY		; program jumps to block "BODY"
 
 FUNCTION:
 	ORG 60			; function starts on register 60
@@ -44,7 +43,7 @@ FUNCTION:
 	POP AL
 	RET
 DISPLAY:
-	MOV AL, [04]		; moves the value of register 05 to AL
+	MOV AL, [04]		; moves the value of register 04 to AL
 	ADD AL,30		; increments AL by 30
 	MOV [C0], AL		; moves the value of AL to the first VDU register (C0)
-	END
+	END			; ends program
